@@ -1,0 +1,7 @@
+# Laptop loopback: software decode instead of the Jetson's nvv4l2decoder.
+
+source: "udpsrc port=5600 buffer-size=4194304 caps=video/mpegts,systemstream=true"
+decoder: "avdec_h265 ! videoconvert ! video/x-raw,format=BGRx"
+meta_wait_ms: 50
+drop_frames: false
+stats_period_s: 5

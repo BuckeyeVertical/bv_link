@@ -1,0 +1,10 @@
+# Jetson on the ground.
+
+source: "udpsrc port=5600 buffer-size=4194304 caps=video/mpegts,systemstream=true"
+
+# Must end in BGRx system memory. nvvidconv does the colour conversion on the VIC, not the CPU.
+decoder: "nvv4l2decoder ! nvvidconv ! video/x-raw,format=BGRx"
+
+meta_wait_ms: 50     # how long a decoded frame waits for a late KLV record
+drop_frames: true    # a slow consumer gets the newest frame instead of a backlog
+stats_period_s: 5

@@ -1,0 +1,25 @@
+[project]
+name = "bv_link"
+version = "0.1.0"
+requires-python = ">=3.10"
+# GStreamer and PyGObject (gi) come from the OS packages, not pip; see README.
+dependencies = ["numpy", "pyyaml", "pymavlink"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+record = ["opencv-python"]
+
+[project.scripts]
+bv-link-air = "bv_link.air.sender:main"
+bv-link-ground = "bv_link.ground.receiver:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -p no:cacheprovider"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["bv_link*"]

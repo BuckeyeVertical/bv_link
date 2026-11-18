@@ -1,0 +1,23 @@
+# Radxa on the drone. Placeholders marked CHECK must be set for your hardware.
+
+mavlink:
+  url: /dev/ttyS4            # CHECK: Radxa UART wired to the flight controller's TELEM port
+  baud: 921600
+  source_system: 1           # same system as the vehicle
+  source_component: 191      # MAV_COMP_ID_ONBOARD_COMPUTER
+  rates_hz:
+    attitude: 100            # ATTITUDE_QUATERNION
+    position: 50             # GLOBAL_POSITION_INT
+    gimbal: 50               # GIMBAL_DEVICE_ATTITUDE_STATUS
+  clock_window_s: 10         # min-filter window for mapping each component's boot clock
+  max_hold_s: 0.2            # past this, a frame outside the buffered samples gets NO_* status
+
+camera:
+  # Everything up to (not including) h265parse. Must output H.265.
+  source: "rtspsrc location=rtsp://192.168.144.25:8554/main latency=0 protocols=tcp ! rtph265depay"  # CHECK URL
+  latency_ms: 0              # exposure -> probe delay. 0 until calibrated; expect 50-150 ms
+
+# Jetson's address on the Herelink ground unit's WiFi. Swap for srtsink if the link is lossy.
+sink: "udpsink host=192.168.43.100 port=5600 sync=false async=false"  # CHECK host
+
+stats_period_s: 5
